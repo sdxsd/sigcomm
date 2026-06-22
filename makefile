@@ -19,7 +19,7 @@ CFILES_SERVER = \
 		src/sigcomm.c
 
 HEADERS = \
-	lib/sigcomm.h
+	include/sigcomm.h
 
 OFILES_CLIENT = $(addprefix obj/,$(CFILES_CLIENT:.c=.o))
 OFILES_SERVER = $(addprefix obj/,$(CFILES_SERVER:.c=.o))
