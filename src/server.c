@@ -28,10 +28,6 @@ A program is free software if users have all of these freedoms.
 #include "../include/sigcomm.h"
 #include <stdio.h>
 
-int putchar(int c) {
-  return (write(STDOUT_FILENO, &c, 1));
-}
-
 void router(int signum, siginfo_t *siginfo, void *data) {
 	static list_t *clients;
 	client_t *client;

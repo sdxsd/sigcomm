@@ -40,7 +40,6 @@ A program is free software if users have all of these freedoms.
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h> // FIXME: Temp
 
 typedef struct client_s {
   pid_t pid; // PID of sender.
