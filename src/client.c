@@ -26,7 +26,6 @@ static pid_t validate_pid(char *str) {
 int main(int argc, char *argv[]) {
   char *str = NULL;
   pid_t pid = 0;
-  size_t len;
 
   if (argc != 3)
     return (1);
@@ -36,7 +35,6 @@ int main(int argc, char *argv[]) {
   str = validate_string(argv[1]);
   if (!str)
     return (1);
-  len = strlen(str);
 
-  send_message(str, len, pid, SIGRTMIN);
+  send_message(str, strlen(str), pid, SIGRTMIN);
 }

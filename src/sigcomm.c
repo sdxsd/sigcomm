@@ -54,7 +54,7 @@ int send_message(char *data, size_t bytes, pid_t receiver, int sig) {
 	union sigval sigval;
 	size_t buf;
 	size_t sent = 0;
-	int to_fill = sizeof(sigval.sival_ptr);
+	size_t to_fill = sizeof(sigval.sival_ptr);
 
 	if (!data || bytes == 0 || receiver < 0 || receiver > PID_MAX)
 		return (FALSE);
@@ -66,10 +66,9 @@ int send_message(char *data, size_t bytes, pid_t receiver, int sig) {
 		buf = 0;
 		if ((bytes - sent) < sizeof(sigval.sival_ptr))
 			to_fill = bytes - sent;
-		for (int i = 0; i < to_fill; i++)
+		for (size_t i = 0; i < to_fill; i++)
 			buf = (buf << 8) | (size_t)data[sent + i];
 		sigval.sival_ptr = (void *)buf;
-		printf("%zu\n", buf);
 		if (sigqueue(receiver, sig, sigval) == -1)
 			return (FALSE);
 		sent += to_fill;
@@ -84,7 +83,7 @@ int receive_message(client_t *client, size_t data) {
 	if (!client || !client->data)
 		return (FALSE);
 	if ((client->to_receive - client->received) < to_fill)
-		to_fill = client->to_receive - client->received;
+		to_fill = (client->to_receive - client->received);
 	if (client->received >= client->allocated) {
 		if ((client->allocated * 2) > client->to_receive) {
 			client->data = realloc(client->data, client->to_receive);
@@ -100,8 +99,8 @@ int receive_message(client_t *client, size_t data) {
 		}
 		buf = (char *)client->data;
 	}
-	for (int i = to_fill; i >= 0; i--) {
-		buf[client->received + i] = (uint8_t)(data & 0xFFu);
+	for (int i = to_fill - 1; i >= 0; i--) {
+		buf[client->received + i] = (char)(data & 0xFFu);
 		data >>= 8;
 	}
 	client->received += to_fill;

@@ -23,11 +23,12 @@ void router(int signum, siginfo_t *siginfo, void *data) {
 			exit(1); // FIXME: Implement actually error handling.
 		if (client->state == MESSAGE_RECEIVED) { // FIXME: Temporarily just print the received string.
 			char *temp = (char *)client->data;
-			printf("Client state MESSAGE_RECEIVED\n");
+			printf("Client state: MESSAGE_RECEIVED\n");
 			printf("Received: %zu\n", client->received);
 			printf("Received bytes:\n");
 			for (size_t i = 0; i < client->received; i++)
-				printf("byte %zu: %c (%d)\n", i, temp[i], temp[i]);
+				printf("%c", temp[i]);
+			printf("\n");
 		}
 		else
 			return;
