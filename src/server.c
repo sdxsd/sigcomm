@@ -21,9 +21,9 @@ void router(int signum, siginfo_t *siginfo, void *data) {
 	else {
 		if (receive_message(client, (size_t)siginfo->si_value.sival_ptr) == FALSE)
 			exit(1); // FIXME: Implement actually error handling.
-		if (client->state == INACTIVE) { // FIXME: Temporarily just print the received string.
+		if (client->state == MESSAGE_RECEIVED) { // FIXME: Temporarily just print the received string.
 			char *temp = (char *)client->data;
-			printf("Client state INACTIVE\n");
+			printf("Client state MESSAGE_RECEIVED\n");
 			printf("Received: %zu\n", client->received);
 			printf("Received bytes:\n");
 			for (size_t i = 0; i < client->received; i++)

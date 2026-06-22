@@ -78,7 +78,7 @@ int send_message(char *data, size_t bytes, pid_t receiver, int sig) {
 }
 
 int receive_message(client_t *client, size_t data) {
-	int to_fill = sizeof(void *);
+	size_t to_fill = sizeof(void *);
 	char *buf = (char *)client->data;
 
 	if (!client || !client->data)
@@ -106,7 +106,7 @@ int receive_message(client_t *client, size_t data) {
 	}
 	client->received += to_fill;
 	if (client->received == client->to_receive)
-		client->state = INACTIVE;
+		client->state = MESSAGE_RECEIVED;
 	return (TRUE);
 }
 

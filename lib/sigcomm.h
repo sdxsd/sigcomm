@@ -5,7 +5,7 @@
 #define FALSE 0
 #define PID_MAX 4194304 // FIXME: Find a consistent way of getting this.
 #define RECEIVING 1
-#define INACTIVE 0
+#define MESSAGE_RECEIVED 0
 #define INITIAL_ALLOC 8 * 4 // 8 bytes * 4 = 4 signals.
 
 #include <signal.h>
@@ -17,7 +17,7 @@
 
 typedef struct client_s {
   pid_t pid; // PID of sender.
-  int state; // RECEIVING / INACTIVE
+  int state; // RECEIVING / MESSAGE_RECEIVED
   size_t to_receive; // Bytes to receive.
   size_t received; // Bytes received.
   size_t allocated; // Bytes already allocated in *data
