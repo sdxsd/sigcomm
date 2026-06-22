@@ -25,7 +25,7 @@ The definition of Free Software is as follows:
 A program is free software if users have all of these freedoms.
 */
 
-#include "../lib/sigcomm.h"
+#include "../include/sigcomm.h"
 #include <ctype.h>
 
 static char *validate_string(char *str) {
