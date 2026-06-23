@@ -70,4 +70,8 @@ int send_message(char *data, size_t bytes, pid_t receiver, int sig);
 // Server Functions:
 int receive_message(client_t *client, size_t data);
 
+// NOTE: Global
+void *(*builtins[30])(client_t *, void *);
+list_t *clients;
+
 #endif // SIGCOMM_H

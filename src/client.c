@@ -28,15 +28,23 @@ A program is free software if users have all of these freedoms.
 #include "../include/sigcomm.h"
 #include <ctype.h>
 
+static int validate_signal(char *str) {
+  if (!str)
+    return (FALSE);
+  int sig = atoi(str);
+  if (sig >= SIGRTMIN && sig <= SIGRTMAX)
+    return (sig);
+  return (FALSE);
+}
+
 static char *validate_string(char *str) {
   if (!str)
     return (NULL);
   size_t len = strlen(str);
 
-  for (size_t i = 0; i < len; i++) {
+  for (size_t i = 0; i < len; i++)
     if (!isascii(str[i]))
       return (NULL);
-  }
   return (str);
 }
 
@@ -53,15 +61,18 @@ static pid_t validate_pid(char *str) {
 int main(int argc, char *argv[]) {
   char *str = NULL;
   pid_t pid = 0;
+  int sig = 0;
 
-  if (argc != 3)
-    return (1);
-  pid = validate_pid(argv[2]);
-  if (pid == FALSE)
+  if (argc != 4)
     return (1);
   str = validate_string(argv[1]);
   if (!str)
     return (1);
-
-  send_message(str, strlen(str), pid, SIGRTMIN);
+  sig = validate_signal(argv[2]);
+    if (!sig)
+      return (1);
+  pid = validate_pid(argv[3]);
+  if (pid == FALSE)
+    return (1);
+  send_message(str, strlen(str), pid, sig);
 }

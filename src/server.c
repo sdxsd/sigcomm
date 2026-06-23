@@ -29,33 +29,33 @@ A program is free software if users have all of these freedoms.
 #include <stdio.h>
 
 void router(int signum, siginfo_t *siginfo, void *data) {
-	static list_t *clients;
-	client_t *client;
-	
-	list_t *ptr;
+  client_t *client;
+  list_t *ptr;
 
-	if (!clients)
-		clients = list_new(NULL); // NOTE: We're going to assume this succeeds.
-	client = get_client(clients, siginfo->si_pid);
-	if (client == NULL) {
-		ptr = client_add(&clients, siginfo->si_pid, (size_t)siginfo->si_value.sival_ptr);
-		printf("to_receive: %zu\n", clients->client->to_receive);
-	}
-	else {
-		if (receive_message(client, (size_t)siginfo->si_value.sival_ptr) == FALSE)
-			exit(1); // FIXME: Implement actually error handling.
-		if (client->state == MESSAGE_RECEIVED) { // FIXME: Temporarily just print the received string.
-			char *temp = (char *)client->data;
-			printf("Client state: MESSAGE_RECEIVED\n");
-			printf("Received: %zu\n", client->received);
-			printf("Received bytes:\n");
-			for (size_t i = 0; i < client->received; i++)
-				printf("%c", temp[i]);
-			printf("\n");
-		}
-		else
-			return;
-	}
+  if (!clients)
+    clients = list_new(NULL); // NOTE: We're going to assume this succeeds.
+  client = get_client(clients, siginfo->si_pid);
+  if (client == NULL) {
+    ptr = client_add(&clients, siginfo->si_pid, (size_t)siginfo->si_value.sival_ptr);
+    if (!ptr)
+      exit(1);
+    printf("to_receive: %zu\n", clients->client->to_receive);
+  }
+  else {
+    if (receive_message(client, (size_t)siginfo->si_value.sival_ptr) == FALSE)
+      exit(1); // FIXME: Implement actually error handling.
+    if (client->state == MESSAGE_RECEIVED) { // FIXME: Temporarily just print the received string.
+      char *temp = (char *)client->data;
+      printf("Client state: MESSAGE_RECEIVED\n");
+      printf("Received: %zu\n", client->received);
+      printf("Received bytes:\n");
+      for (size_t i = 0; i < client->received; i++)
+        printf("%c", temp[i]);
+      printf("\n");
+    }
+    else
+      return;
+  }
 }
 
 
