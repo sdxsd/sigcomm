@@ -26,9 +26,11 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../include/sigcomm.h"
+#include "../include/builtins.h"
 #include <stdio.h>
 
 void router(int signum, siginfo_t *siginfo, void *data) {
+  static list_t *clients;
   client_t *client;
   list_t *ptr;
 
@@ -45,13 +47,8 @@ void router(int signum, siginfo_t *siginfo, void *data) {
     if (receive_message(client, (size_t)siginfo->si_value.sival_ptr) == FALSE)
       exit(1); // FIXME: Implement actually error handling.
     if (client->state == MESSAGE_RECEIVED) { // FIXME: Temporarily just print the received string.
-      char *temp = (char *)client->data;
-      printf("Client state: MESSAGE_RECEIVED\n");
-      printf("Received: %zu\n", client->received);
-      printf("Received bytes:\n");
-      for (size_t i = 0; i < client->received; i++)
-        printf("%c", temp[i]);
-      printf("\n");
+      /* print_message(client, client->data); */
+      simple_exec(client, client->data);
     }
     else
       return;

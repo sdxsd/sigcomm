@@ -5,5 +5,9 @@
 #define READ 0
 
 #include <stdio.h>
+#include "../include/sigcomm.h"
+
+void *simple_exec(client_t *client, void *data);
+void *print_message(client_t *client, void *data);
 
 #endif // BUILTINS_H

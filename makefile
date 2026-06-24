@@ -16,6 +16,8 @@ CFILES_CLIENT = \
 
 CFILES_SERVER = \
 		src/server.c \
+		src/utils.c \
+		src/builtins.c \
 		src/sigcomm.c
 
 HEADERS = \

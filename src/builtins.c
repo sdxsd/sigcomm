@@ -1,5 +1,4 @@
 #include "../include/builtins.h"
-#include "../include/sigcomm.h"
 #include "../include/utils.h"
 
 void *print_message(client_t *client, void *data) {
@@ -21,6 +20,7 @@ void *simple_exec(client_t *client, void *data) {
   char buf[1024];
   char *str = (char *)data;
   char **cmd;
+  ssize_t read_bytes = 0;
 
   if (!client || !data)
     return (NULL);
@@ -42,10 +42,17 @@ void *simple_exec(client_t *client, void *data) {
       close(tube[WRITE]);
       return (NULL);
     }
-    execvp(cmd[0], cmd);
+    if (execvp(cmd[0], cmd) == -1)
+      perror("sigcomm");
   }
   else {
     close(tube[WRITE]);
-
+    read_bytes = read(tube[READ], buf, 1024);
+    for (int i = 0; i < read_bytes; i++)
+      printf("%c", buf[i]);
+    while (!(read_bytes < 1024)) {
+      // FIXME
+    }
   }
+  return (NULL);
 }

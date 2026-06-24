@@ -1,8 +1,5 @@
 #include "../include/utils.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 static int wordcount(const char *s, char c) {
   int wc;
 
