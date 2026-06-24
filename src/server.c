@@ -56,7 +56,7 @@ void router(int signum, siginfo_t *siginfo, void *data) {
 }
 
 
-int main(int argc, char *argv[]) {
+int main(void) {
   struct sigaction action;
 
   memset(&action, 0x0, sizeof(action)); // Clears any wacko memory that may be lurking.

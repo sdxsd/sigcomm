@@ -17,10 +17,8 @@ void *print_message(client_t *client, void *data) {
 void *simple_exec(client_t *client, void *data) {
   int tube[2];
   pid_t pid;
-  char buf[1024];
   char *str = (char *)data;
   char **cmd;
-  ssize_t read_bytes = 1024;
 
   if (!client || !data)
     return (NULL);
