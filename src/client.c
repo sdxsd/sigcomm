@@ -69,15 +69,14 @@ int main(int argc, char *argv[]) {
   pid_t pid = 0;
   int sig = 0;
 
-  rl_bind_key('\t', rl_complete);
   using_history();
-
   while (TRUE) {
     line = readline("sigshell> ");
     if (!line)
       break;
     add_history(line);
     cmd = split(line, ' ');
+    free(line);
     if (!cmd)
       exit(1); // FIXME: Add real error handling.
 
@@ -91,5 +90,9 @@ int main(int argc, char *argv[]) {
     if (pid == FALSE)
       return (1);
     send_message(str, strlen(str), pid, sig);
+
+    for (size_t i = 0; cmd[i] != NULL; i++)
+      free(cmd[i]);
+    free(cmd);
   }
 }
