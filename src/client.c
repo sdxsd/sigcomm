@@ -26,7 +26,11 @@ A program is free software if users have all of these freedoms.
 */
 
 #include "../include/sigcomm.h"
+#include "../include/utils.h"
 #include <ctype.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 static int validate_signal(char *str) {
   if (!str)
@@ -60,19 +64,32 @@ static pid_t validate_pid(char *str) {
 // Takes as argument string to send and pid.
 int main(int argc, char *argv[]) {
   char *str = NULL;
+  char *line = NULL;
+  char **cmd;
   pid_t pid = 0;
   int sig = 0;
 
-  if (argc != 4)
-    return (1);
-  str = validate_string(argv[1]);
-  if (!str)
-    return (1);
-  sig = validate_signal(argv[2]);
+  rl_bind_key('\t', rl_complete);
+  using_history();
+
+  while (TRUE) {
+    line = readline("sigshell> ");
+    if (!line)
+      break;
+    add_history(line);
+    cmd = split(line, ' ');
+    if (!cmd)
+      exit(1); // FIXME: Add real error handling.
+
+    str = validate_string(cmd[0]);
+    if (!str)
+      return (1);
+    sig = validate_signal(cmd[1]);
     if (!sig)
       return (1);
-  pid = validate_pid(argv[3]);
-  if (pid == FALSE)
-    return (1);
-  send_message(str, strlen(str), pid, sig);
+    pid = validate_pid(cmd[2]);
+    if (pid == FALSE)
+      return (1);
+    send_message(str, strlen(str), pid, sig);
+  }
 }

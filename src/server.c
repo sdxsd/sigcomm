@@ -46,7 +46,7 @@ void router(int signum, siginfo_t *siginfo, void *data) {
   else {
     if (receive_message(client, (size_t)siginfo->si_value.sival_ptr) == FALSE)
       exit(1); // FIXME: Implement actually error handling.
-    if (client->state == MESSAGE_RECEIVED) { // FIXME: Temporarily just print the received string.
+    if (client->state == MESSAGE_RECEIVED) { // FIXME: Implement per signal commands.
       /* print_message(client, client->data); */
       simple_exec(client, client->data);
     }

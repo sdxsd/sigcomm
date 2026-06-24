@@ -12,6 +12,7 @@ NAME_SERVER = server
 
 CFILES_CLIENT = \
 		src/client.c \
+		src/utils.c \
 		src/sigcomm.c
 
 CFILES_SERVER = \
@@ -30,10 +31,10 @@ all: client server
 
 obj/%.o: %.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I include -c $< -o $@
 
 client: $(OFILES_CLIENT)
-	$(CC) $(CFLAGS) $(OFILES_CLIENT) -o $(NAME_CLIENT)
+	$(CC) $(CFLAGS) $(OFILES_CLIENT) -l readline -o $(NAME_CLIENT)
 
 server: $(OFILES_SERVER)
 	$(CC) $(CFLAGS) $(OFILES_SERVER) -o $(NAME_SERVER)
