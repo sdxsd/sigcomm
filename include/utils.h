@@ -5,8 +5,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#define BUF_SIZE 1024
+#define BLKSIZE 1024
 
 char **split(char const *s, char c);
+char *read_into_str(int fd);
 
 #endif // UTILS_H

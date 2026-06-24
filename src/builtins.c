@@ -47,10 +47,10 @@ void *simple_exec(client_t *client, void *data) {
   }
   else {
     close(tube[WRITE]);
-    while (!(read_bytes < 1024)) {
-      read_bytes = read(tube[READ], buf, 1024);
-
-    }
+    char *output = read_into_str(tube[READ]);
+    printf("%s", output);
+    free(output);
+    close(tube[READ]);
   }
   return (NULL);
 }
